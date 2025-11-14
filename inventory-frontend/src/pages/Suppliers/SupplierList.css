@@ -1,0 +1,79 @@
+.supplier-list {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.supplier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.supplier-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.supplier-contact,
+.supplier-email,
+.supplier-phone,
+.supplier-address {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.supplier-contact {
+  font-weight: 600;
+  color: #333;
+}
+
+.supplier-email {
+  color: #2563eb;
+}
+
+.supplier-phone {
+  color: #059669;
+}
+
+.supplier-address {
+  font-style: italic;
+  color: #666;
+}
+
+.supplier-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.supplier-actions button {
+  flex: 1;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
