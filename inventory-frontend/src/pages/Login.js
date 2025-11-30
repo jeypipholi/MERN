@@ -31,6 +31,12 @@ const Login = () => {
     setError('');
     setLoading(true);
 
+    if( !formData.email || !formData.password ) {
+      setError('Please fill in all fields');
+      setLoading(false);
+      return;
+    }
+
     const result = await login(formData);
 
     if (result.success) {

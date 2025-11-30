@@ -65,6 +65,20 @@ const Dashboard = () => {
           <div className="stat-label">Total Transactions</div>
         </Card>
       </div>
+
+    <div className="dashboard-nav">
+        <Card className="nav-card">
+          <div className="nav-card-text" >POS</div>
+        </Card>
+
+        <Card className="nav-card">
+          <div className="nav-card-text">Sales Report</div>
+        </Card>
+
+        <Card className="nav-card">
+          <div className="nav-card-text">Stock Report</div>
+        </Card>
+    </div>
     </div>
   );
 };
