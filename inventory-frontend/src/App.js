@@ -22,6 +22,10 @@ import ProductDetail from './pages/Products/ProductDetail';
 import TransactionDetail from './pages/Transactions/TransactionDetail';
 import CategoryDetail from './pages/Categories/CategoryDetail';
 import POS from './pages/POS/POS';
+import Reports from './pages/Reports/Reports';
+import Sales from './pages/Reports/Sales';
+import InventoryReport from './pages/Reports/InventoryReport';
+import StockReport from './pages/Reports/StockReport';
 
 import './App.css';
 
@@ -241,6 +245,39 @@ function App() {
                 element={
                   <RoleProtectedRoute requiredRoles={['admin']}>
                     <TransactionDetail />
+                  </RoleProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/reports"
+                element={
+                  <RoleProtectedRoute requiredRoles={['admin']}>
+                    <Reports />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="/reports/sales"
+                element={
+                  <RoleProtectedRoute requiredRoles={['admin']}>
+                    <Sales />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="/reports/inventory"
+                element={
+                  <RoleProtectedRoute requiredRoles={['admin']}>
+                    <InventoryReport />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="/reports/stock"
+                element={
+                  <RoleProtectedRoute requiredRoles={['admin']}>
+                    <StockReport />
                   </RoleProtectedRoute>
                 }
               />

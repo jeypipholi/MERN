@@ -1,10 +1,9 @@
 import api from './api';
-import { API_ENDPOINTS } from '../utils/constants';
 
 export const posService = {
   // Process checkout
   checkout: async (items, paymentMethod, notes = '') => {
-    const response = await api.post(`${API_ENDPOINTS.API_BASE}/pos/checkout`, {
+    const response = await api.post(`/pos/checkout`, {
       items,
       paymentMethod,
       notes
@@ -14,7 +13,7 @@ export const posService = {
 
   // Get sales history for current cashier
   getSalesHistory: async (limit = 20, skip = 0) => {
-    const response = await api.get(`${API_ENDPOINTS.API_BASE}/pos/sales`, {
+    const response = await api.get(`/pos/sales`, {
       params: { limit, skip }
     });
     return response.data;
@@ -22,7 +21,7 @@ export const posService = {
 
   // Get daily sales report
   getDailyReport: async () => {
-    const response = await api.get(`${API_ENDPOINTS.API_BASE}/pos/daily-report`);
+    const response = await api.get(`/pos/daily-report`);
     return response.data;
   }
 };

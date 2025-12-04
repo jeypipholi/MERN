@@ -1,0 +1,18 @@
+.reports-page {
+  padding: 16px;
+}
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+.inv-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+.card-actions {
+  margin-top: 12px;
+}
+.error { color: red; }

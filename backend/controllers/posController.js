@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const Transaction = require('../models/Transaction');
+const Sale = require('../models/Sale');
 const User = require('../models/User');
 
 // @desc    Process POS sale/checkout
@@ -62,9 +63,9 @@ exports.checkout = async (req, res) => {
       });
     }
 
-    // Calculate totals
+    // Calculate totals (2% tax)
     const subtotal = total;
-    const taxRate = 0.12; // 12% tax
+    const taxRate = 0.02; // 2% tax
     const tax = subtotal * taxRate;
     const finalTotal = subtotal + tax;
 
@@ -88,12 +89,31 @@ exports.checkout = async (req, res) => {
       transactionIds.push(transaction._id);
     }
 
-    // Return receipt
+    // Create Sale record
+    const sale = await Sale.create({
+      items: processedItems.map(item => ({
+        productId: item.productId,
+        productName: item.productName,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        itemTotal: item.itemTotal
+      })),
+      subtotal,
+      tax,
+      total: finalTotal,
+      paymentMethod,
+      cashier: userId,
+      transactionIds,
+      notes: notes || `POS Sale - Payment: ${paymentMethod}`
+    });
+
+    // Return receipt (include sale id)
     res.status(201).json({
       success: true,
       message: 'Sale completed successfully',
       data: {
         receipt: {
+          saleId: sale._id,
           transactionIds: transactionIds,
           items: processedItems.map(item => ({
             productName: item.productName,
@@ -106,7 +126,7 @@ exports.checkout = async (req, res) => {
           total: finalTotal.toFixed(2),
           paymentMethod: paymentMethod,
           cashier: `${req.user.firstName} ${req.user.lastName}`,
-          date: new Date().toISOString()
+          date: sale.date ? sale.date.toISOString() : new Date().toISOString()
         }
       }
     });
@@ -188,7 +208,7 @@ exports.getDailyReport = async (req, res) => {
       }
     });
 
-    const tax = totalRevenue * 0.12;
+    const tax = totalRevenue * 0.02; // 2% tax
     const netRevenue = totalRevenue + tax;
 
     res.status(200).json({

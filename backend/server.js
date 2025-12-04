@@ -24,6 +24,7 @@ app.use('/api/categories', require('./routes/categories'));
 app.use('/api/suppliers', require('./routes/suppliers'));
 app.use('/api/transactions', require('./routes/transactions'));
 app.use('/api/pos', require('./routes/pos'));
+app.use('/api/admin/reports', require('./routes/reports'));
 
 // Health check route
 app.get('/api/health', (req, res) => {

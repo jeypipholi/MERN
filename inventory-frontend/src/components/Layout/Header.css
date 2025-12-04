@@ -44,3 +44,53 @@
   align-items: center;
   gap: 15px;
 }
+
+/* Reports dropdown */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-dropdown .dropdown-toggle {
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+.nav-dropdown .dropdown-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(82,26,214,0.12);
+}
+
+.nav-dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: white;
+  color: #333;
+  min-width: 200px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 60;
+}
+
+.nav-dropdown.open .dropdown-menu {
+  display: block;
+}
+
+.nav-dropdown .dropdown-menu a {
+  display: block;
+  padding: 10px 14px;
+  color: #333;
+  text-decoration: none;
+}
+
+.nav-dropdown .dropdown-menu a:hover {
+  background: #f4f4f4;
+}

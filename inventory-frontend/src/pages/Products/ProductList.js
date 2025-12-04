@@ -19,7 +19,9 @@ const ProductList = () => {
   const fetchProducts = async () => {
     try {
       const response = await productService.getAll({ search: searchTerm });
-      setProducts(response.data || []);
+      // support response shape: { success, data } or direct array
+      const payload = response.data ?? response;
+      setProducts(payload.data || payload || []);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
@@ -67,9 +69,9 @@ const ProductList = () => {
           <Card key={product._id} className="product-card">
             <h3>{product.name}</h3>
             <p className="product-sku">SKU: {product.sku}</p>
-            <p className="product-price">${product.price}</p>
+            <p className="product-price">₱{Number(product.price).toLocaleString()}</p>
             <p className="product-quantity">
-              Stock: <span className={product.quantity < 10 ? 'low-stock' : ''}>
+              Stock: <span className={product.quantity <= 0 ? 'out-stock' : (product.quantity < 10 ? 'low-stock' : '')}>
                 {product.quantity}
               </span>
             </p>
