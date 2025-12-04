@@ -21,11 +21,10 @@ import TransactionForm from './pages/Transactions/TransactionForm';
 import ProductDetail from './pages/Products/ProductDetail';
 import TransactionDetail from './pages/Transactions/TransactionDetail';
 import CategoryDetail from './pages/Categories/CategoryDetail';
-
+import POS from './pages/POS/POS';
 
 import './App.css';
-import ProductDetails from './pages/Products/ProductDetail';
-import CategoryDetails from './pages/Categories/CategoryDetail';
+
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -37,15 +36,39 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
-// Public Route Component (redirects to dashboard if logged in)
-const PublicRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+// Role-Based Protected Route Component
+const RoleProtectedRoute = ({ children, requiredRoles }) => {
+  const { isAuthenticated, loading, hasRole } = useAuth();
 
   if (loading) {
     return <Loading />;
   }
 
-  return !isAuthenticated ? children : <Navigate to="/dashboard" />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  if (!hasRole(requiredRoles)) {
+    return <Navigate to="/dashboard" />;
+  }
+
+  return children;
+};
+
+// Public Route Component (redirects based on role if logged in)
+const PublicRoute = ({ children }) => {
+  const { isAuthenticated, loading, getRedirectPath } = useAuth();
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (isAuthenticated) {
+    const redirectPath = getRedirectPath();
+    return <Navigate to={redirectPath} />;
+  }
+
+  return children;
 };
 
 function App() {
@@ -74,141 +97,151 @@ function App() {
                 }
               />
 
-              {/* Protected Routes */}
+              {/* POS Route - User, Cashier, Admin */}
+              <Route
+                path="/pos"
+                element={
+                  <RoleProtectedRoute requiredRoles={['user', 'cashier', 'admin']}>
+                    <POS />
+                  </RoleProtectedRoute>
+                }
+              />
+
+              {/* Admin Protected Routes */}
               <Route
                 path="/dashboard"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <Dashboard />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/products"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <ProductList />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/products/new"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <ProductForm />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/products/:id/edit"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <ProductForm />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/products/:id/detail"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <ProductDetail />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/categories"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <CategoryList />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/categories/new"
                 element={
-                  <ProtectedRoute>
-                    <CategoryForm/>
-                  </ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
+                    <CategoryForm />
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/categories/:id/edit"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <CategoryForm />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/categories/:id/detail"
                 element={
-                  <ProtectedRoute>
-                    <CategoryDetail/>
-                  </ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
+                    <CategoryDetail />
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/suppliers"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <SupplierList />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/suppliers/new"
                 element={
-                  <ProtectedRoute>
-                    <SupplierForm/>
-                  </ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
+                    <SupplierForm />
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/suppliers/:id/edit"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <SupplierForm />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/suppliers/:id/detail"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <SupplierDetail />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/transactions"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <TransactionList />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/transactions/new"
                 element={
-                  <ProtectedRoute>
-                    <TransactionForm/>
-                  </ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
+                    <TransactionForm />
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/transactions/:id/edit"
                 element={
-                  <ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
                     <TransactionForm />
-                  </ProtectedRoute>
+                  </RoleProtectedRoute>
                 }
               />
               <Route
                 path="/transactions/:id/detail"
                 element={
-                  <ProtectedRoute>
-                    <TransactionDetail/>
-                  </ProtectedRoute>
+                  <RoleProtectedRoute requiredRoles={['admin']}>
+                    <TransactionDetail />
+                  </RoleProtectedRoute>
                 }
               />
 

@@ -15,7 +15,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { login } = useAuth();
+  const { login, getRedirectPath } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -40,7 +40,9 @@ const Login = () => {
     const result = await login(formData);
 
     if (result.success) {
-      navigate('/dashboard');
+      // Redirect based on user role
+      const redirectPath = getRedirectPath();
+      navigate(redirectPath);
     } else {
       setError(result.message || 'Login failed');
     }

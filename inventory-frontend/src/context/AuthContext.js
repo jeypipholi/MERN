@@ -83,13 +83,31 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  // Get redirect path based on user role
+  const getRedirectPath = () => {
+    if (!user) return '/login';
+    if (user.role === 'admin') return '/dashboard';
+    return '/pos'; // default to POS for user and cashier roles
+  };
+
+  // Check if user has a specific role
+  const hasRole = (roleToCheck) => {
+    if (!user) return false;
+    if (Array.isArray(roleToCheck)) {
+      return roleToCheck.includes(user.role);
+    }
+    return user.role === roleToCheck;
+  };
+
   const value = {
     user,
     loading,
     isAuthenticated,
     login,
     register,
-    logout
+    logout,
+    getRedirectPath,
+    hasRole
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
